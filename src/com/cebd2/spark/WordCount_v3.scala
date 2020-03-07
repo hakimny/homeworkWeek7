@@ -1,4 +1,4 @@
-package com.cellariot.spark
+package com.cebd2.spark
 
 import org.apache.spark._
 import org.apache.spark.SparkContext._
@@ -19,7 +19,7 @@ object WordCount_v3 {
     val sc = new SparkContext(conf)  
     
     // Load each line of my book into an RDD
-    val input = sc.textFile("../book.txt")
+    val input = sc.textFile("../ml-100k/book.txt")
     
     // Split using a regular expression that extracts words
     val words = input.flatMap(x => x.split("\\W+"))
@@ -40,6 +40,12 @@ object WordCount_v3 {
       println(s"$word: $count")
     }
     
+    //Top 10 Words
+    val listToEliminate =sc.parallelize(Seq("you", "to", "your", "the", "a", "of", "and")).collect()
+    
+    val topTenList = wordCountsSorted.filter(x => !listToEliminate.contains(x._2)).sortByKey(false).collect().take(10)
+    println("\n\n\n ###### TOP 10 WORDS ########")
+    topTenList.foreach(println)
   }
   
 }

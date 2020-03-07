@@ -1,4 +1,4 @@
-package com.cellariot.spark
+package com.cebd2.spark
 
 import org.apache.spark._
 import org.apache.spark.SparkContext._
@@ -35,11 +35,11 @@ object MostPopularSuperhero {
     val sc = new SparkContext(conf)   
     
     // Build up a hero ID -> name RDD
-    val names = sc.textFile("../marvel-names.txt")
+    val names = sc.textFile("../ml-100k/marvel-names.txt")
     val namesRdd = names.flatMap(parseNames)
     
     // Load up the superhero co-apperarance data
-    val lines = sc.textFile("../marvel-graph.txt")
+    val lines = sc.textFile("../ml-100k/marvel-graph.txt")
     
     // Convert to (heroID, number of connections) RDD
     val pairings = lines.map(countCoOccurences)
